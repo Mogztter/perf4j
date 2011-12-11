@@ -19,33 +19,40 @@ public interface AbstractJoinPoint {
      * @return result of proceeding
      * @throws Throwable thrown exception
      */
-    public Object proceed() throws Throwable;
+    Object proceed() throws Throwable;
 
     /**
      * Returns an object whose method was annotated (profiled).
      *
      * @return an object whose method was annotated
      */
-    public Object getExecutingObject();
+    Object getExecutingObject();
 
     /**
      * Returns a parameters (arguments) array of processing method.
      *
      * @return array of parameters
      */
-    public Object[] getParameters();
+    Object[] getParameters();
 
     /**
      * Returns a processing method name.
      *
      * @return processing method name
      */
-    public String getMethodName();
+    String getMethodName();
 
     /**
      * Returns the declaring class of the method that was annotated.
      *
      * @return the declaring class of the method that was annotated
      */
-    public Class<?> getDeclaringClass();
+    Class<?> getDeclaringClass();
+
+    /**
+     * Returns the context data of the invocation context.
+     *
+     * @return the context data of the invocation context
+     */
+    Map<String, Object> getContextData();
 }

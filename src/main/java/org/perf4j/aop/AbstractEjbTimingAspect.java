@@ -49,6 +49,10 @@ public abstract class AbstractEjbTimingAspect extends AgnosticTimingAspect {
                         }
                         
                         public Class<?> getDeclaringClass() { return (executingMethod == null) ? null : executingMethod.getDeclaringClass() ; }
+
+                        public Map<String,Object>  getContextData() {
+                            return ctx.getContextData();
+                        }
                     },
                     profiled,
                     newStopWatch(profiled.logger(), profiled.level())

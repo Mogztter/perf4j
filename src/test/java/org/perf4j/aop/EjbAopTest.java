@@ -17,11 +17,13 @@ import java.util.Map;
  */
 public class EjbAopTest extends TestCase {
     EjbProfiledObjectInterface profiledObject;
+    EjbCallObjectInterface ejbCallObject;
 
     protected void setUp() throws Exception {
         super.setUp();
         //create the profiled object
         profiledObject = wrapBean(EjbProfiledObjectInterface.class, EjbProfiledObject.class);
+        ejbCallObject = wrapBean(EjbCallObjectInterface.class, EjbCallObject.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -72,7 +74,11 @@ public class EjbAopTest extends TestCase {
 
                                 public void setParameters(Object[] objects) { /* not supported */ }
 
-                                public Map<String, Object> getContextData() { return new HashMap<String, Object>(); }
+                                public Map<String, Object> getContextData() {
+                                    final HashMap<String, Object> contextData = new HashMap<String, Object>();
+                                    contextData.put("callDepth", 2L);
+                                    return contextData;
+                                }
 
                                 public Object proceed() throws Exception { return method.invoke(beanInstance, args); }
                             };
@@ -103,5 +109,9 @@ public class EjbAopTest extends TestCase {
                 EjbInMemoryTimingAspect.getLastLoggedString().indexOf("tag[org.perf4j.aop.EjbProfiledObject#simpleTestDefaultTagMessageFromPropertiesJexl]") >= 0);
         assertTrue("Expected tag not found in " + EjbInMemoryTimingAspect.getLastLoggedString(),
                 EjbInMemoryTimingAspect.getLastLoggedString().indexOf("message[simpleTestDefaultTagMessageFromPropertiesJexl(5)]") >= 0);
+
+        profiledObject.simpleTestCallDepthJexl(5, ejbCallObject);
+        assertTrue("Expected tag not found in " + EjbInMemoryTimingAspect.getLastLoggedString(1),
+                EjbInMemoryTimingAspect.getLastLoggedString(1).contains("tag[2]"));
     }
 }

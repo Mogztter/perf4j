@@ -99,7 +99,8 @@ public class AgnosticTimingAspect {
                         joinPoint.getExecutingObject(),
                         joinPoint.getDeclaringClass(),
                         returnValue,
-                        exceptionThrown);
+                        exceptionThrown,
+                        joinPoint.getContextData());
             }
         } else if (profiled.el() && profiled.tag().indexOf("{") >= 0) {
             tag = evaluateJexl(profiled.tag(),
@@ -108,7 +109,8 @@ public class AgnosticTimingAspect {
                                joinPoint.getExecutingObject(),
                                joinPoint.getDeclaringClass(),
                                returnValue,
-                               exceptionThrown);
+                               exceptionThrown,
+                               joinPoint.getContextData());
         } else {
             tag = profiled.tag();
         }
@@ -150,7 +152,8 @@ public class AgnosticTimingAspect {
                             joinPoint.getExecutingObject(),
                             joinPoint.getDeclaringClass(),
                             returnValue,
-                            exceptionThrown);
+                            exceptionThrown,
+                            joinPoint.getContextData());
                 }
             }
         } else if (profiled.el() && profiled.message().indexOf("{") >= 0) {
@@ -160,7 +163,8 @@ public class AgnosticTimingAspect {
                                    joinPoint.getExecutingObject(),
                                    joinPoint.getDeclaringClass(),
                                    returnValue,
-                                   exceptionThrown);
+                                   exceptionThrown,
+                                   joinPoint.getContextData());
             if ("".equals(message)) {
                 message = null;
             }
@@ -194,7 +198,8 @@ public class AgnosticTimingAspect {
                                   Object annotatedObject,
                                   Class<?> annotatedClass,
                                   Object returnValue,
-                                  Throwable exceptionThrown) {
+                                  Throwable exceptionThrown,
+                                  Map<String, Object> contextData) {
         StringBuilder retVal = new StringBuilder(text.length());
 
         //create a JexlContext to be used in all evaluations
@@ -207,6 +212,7 @@ public class AgnosticTimingAspect {
         jexlContext.getVars().put("$class", annotatedClass);
         jexlContext.getVars().put("$return", returnValue);
         jexlContext.getVars().put("$exception", exceptionThrown);
+        jexlContext.getVars().put("$contextData", contextData);
 
         // look for {expression} in the passed in text
         int bracketIndex;

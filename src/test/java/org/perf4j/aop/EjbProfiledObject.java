@@ -45,4 +45,14 @@ public class EjbProfiledObject implements EjbProfiledObjectInterface {
         return sleepTime;
     }
 
+    /**
+     * See perf4j.properties for expected tag and message
+     * @param sleepTime
+     * @return
+     * @throws Exception
+     */
+    @Interceptors(EjbInMemoryTimingAspect.class)
+    public long simpleTestCallDepthJexl(long sleepTime, EjbCallObjectInterface secondCallObject) throws Exception {
+        return secondCallObject.secondCall(sleepTime);
+    }
 }

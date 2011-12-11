@@ -27,11 +27,26 @@ public class EjbInMemoryTimingAspect extends AbstractEjbTimingAspect {
         };
     }
 
-    public static String getLastLoggedString() {
-        if (logStrings.size() > 0) {
-            return logStrings.get(logStrings.size() - 1);
+    /**
+     * Returns the last but... one, two, three... logged string.
+     * @param lastBut the last but... one, two, three...
+     *
+     * @return the last but... one, two, three... logged string
+     */
+    public static String getLastLoggedString(int lastBut) {
+        if (logStrings.size() > lastBut) {
+            return logStrings.get((logStrings.size() - 1) - lastBut);
         } else {
             return null;
         }
+    }
+
+    /**
+     * Returns the last logged string.
+     *
+     * @return the last logged string
+     */
+    public static String getLastLoggedString() {
+        return getLastLoggedString(0);
     }
 }

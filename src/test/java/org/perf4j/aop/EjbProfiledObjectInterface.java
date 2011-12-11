@@ -12,4 +12,6 @@ public interface EjbProfiledObjectInterface {
 
     long simpleTestDefaultTagMessageFromPropertiesJexl(long sleepTime) throws Exception;
 
+    long simpleTestCallDepthJexl(long sleepTime, EjbCallObjectInterface secondCallObject) throws Exception;
+
 }
